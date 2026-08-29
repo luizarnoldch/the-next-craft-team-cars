@@ -88,6 +88,9 @@ app.post("/devices/:deviceId/stop", (req, res) => {
   const device = devices.get(req.params.deviceId);
   if (!device) return res.status(404).json({ error: "device no encontrado" });
   device.running = false;
+  // Stop también limpia la falla activa: en un panel de control, frenar el auto
+  // se espera que "resetee" el escenario — la barra se recupera gradual, no de un salto.
+  device.fault = "none";
   res.json(serializeDevice(device));
 });
 
