@@ -3,7 +3,7 @@
 import { useQuery } from "convex/react";
 import { useEffect, useRef } from "react";
 import { toast } from "@/components/ui/toast";
-import { playAlertSound } from "@/lib/alert-sound";
+import { initAlertSoundUnlock, playAlertSound } from "@/lib/alert-sound";
 import { api } from "../../../convex/_generated/api";
 
 const alertTypeLabel: Record<string, string> = {
@@ -20,6 +20,10 @@ export function AlertWatcher() {
   const alerts = useQuery(api.alerts.active);
   const devices = useQuery(api.devices.list);
   const seenIds = useRef<Set<string> | null>(null);
+
+  useEffect(() => {
+    initAlertSoundUnlock();
+  }, []);
 
   useEffect(() => {
     if (alerts === undefined) return;
